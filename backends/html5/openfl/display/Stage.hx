@@ -352,6 +352,10 @@ class Stage extends Sprite {
 		
 	}
 	
+	private function isNotIE9():Dynamic{
+		return untyped __js__("function(){return navigator.userAgent.toLowerCase().indexOf('msie 9') == -1; }")();
+	}
+
 	
 	private function __initializeCanvas ():Void {
 		
@@ -381,8 +385,10 @@ class Stage extends Sprite {
 		//__context.imageSmoothingEnabled = false;
 		
 		var style = __canvas.style;
-		style.setProperty ("-webkit-transform", "translateZ(0)", null);
-		style.setProperty ("transform", "translateZ(0)", null);
+		if (isNotIE9()){
+			style.setProperty ("-webkit-transform", "translateZ(0)", null);
+			style.setProperty ("transform", "translateZ(0)", null);
+		}
 		
 		__renderSession = new RenderSession ();
 		__renderSession.context = __context;
@@ -403,16 +409,21 @@ class Stage extends Sprite {
 			
 		}
 		
-		style.setProperty ("-webkit-transform", "translate3D(0,0,0)", null);
-		style.setProperty ("transform", "translate3D(0,0,0)", null);
+		if (isNotIE9()){
+			style.setProperty ("-webkit-transform", "translate3D(0,0,0)", null);
+			style.setProperty ("transform", "translate3D(0,0,0)", null);
+		}
 		//style.setProperty ("-webkit-transform-style", "preserve-3d", null);
 		//style.setProperty ("transform-style", "preserve-3d", null);
 		style.position = "relative";
 		style.overflow = "hidden";
-		style.setProperty ("-webkit-user-select", "none", null);
-		style.setProperty ("-moz-user-select", "none", null);
-		style.setProperty ("-ms-user-select", "none", null);
-		style.setProperty ("-o-user-select", "none", null);
+		
+		if (isNotIE9()){
+			style.setProperty ("-webkit-user-select", "none", null);
+			style.setProperty ("-moz-user-select", "none", null);
+			style.setProperty ("-ms-user-select", "none", null);
+			style.setProperty ("-o-user-select", "none", null);
+		}
 		
 		// Disable image drag on Firefox
 		Browser.document.addEventListener ("dragstart", function (e) {
